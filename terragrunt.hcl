@@ -4,7 +4,7 @@
 #   https://github.com/gruntwork-io/terragrunt-infrastructure-live-example/blob/4a8569c33088e13938d412f65a27a16d4e2d524b/terragrunt.hcl
 
 
-# Create a default provider.
+# Create a default provider (in the terragrunt cache folder for the module executed)
 # We can still create aliased providers, I hope.
 # Generate an AWS provider block
 generate "provider" {
@@ -23,6 +23,8 @@ EOF
 
 
 # TODO: enable once this works
+#
+# Create a backend.tf file (in the folder where the module is executed)
 #
 # remote_state {
 #   backend = "s3"

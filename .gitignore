@@ -36,3 +36,5 @@
 #
 # This is good to add since it just tracks the provider used
 #**/.terraform.lock.hcl
+
+**/.terragrunt-cache

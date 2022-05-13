@@ -1,0 +1,43 @@
+# Why use Terragrunt (TG) and not just Terraform (TF)
+
+TG makes it easier to manage state.
+It automatically creates:
+- the remote S3 Bucket
+- the remote DynamoDB lock table
+- the backend.tf files ... IN EVERY MODULE DIR that need them, as defined by the presence of a terragrunt.hcl file.
+  Example:
+    These files work together to create a backend.tf for the mysql module
+    - https://github.com/gruntwork-io/terragrunt-infrastructure-live-example/blob/4a8569c33088e13938d412f65a27a16d4e2d524b/non-prod/us-east-1/qa/mysql/terragrunt.hcl#L20
+    - https://github.com/gruntwork-io/terragrunt-infrastructure-live-example/blob/4a8569c33088e13938d412f65a27a16d4e2d524b/terragrunt.hcl#L38
+
+TG makes it possible to decompose a system by directory such that a run can be executed at the top of
+the hierarchy, or against a sub-module.
+See: https://terragrunt.gruntwork.io/docs/features/execute-terraform-commands-on-multiple-modules-at-once/#passing-outputs-between-modules
+
+TF has opted to not add an "include" mechanism
+  See: https://github.com/hashicorp/terraform/issues/1478#issuecomment-513059932
+TG does support a form of import via "read_terragrunt_config()".
+  This allows reading TG's Locals (locals{} in a TG .hcl file) into a map
+  Example: https://github.com/gruntwork-io/terragrunt-infrastructure-live-example/blob/master/terragrunt.hcl#L12
+
+
+# TG Usage
+
+## TG inputs
+
+Inputs help separate module calls, which should be done like this:
+
+terraform {
+  source = "${local.base_source_url}?ref=v0.7.0"
+}
+
+... from parameters to those modules, which should be set like this
+
+# MODULE PARAMETERS
+#   These are the variables we have to pass in to use the module.
+#   This defines the parameters that are common across all environments.
+#   TG transforms these to "TF_VAR_<input_name>=<input_value> in the TF run"
+inputs = {
+  inpA = valA
+}
+

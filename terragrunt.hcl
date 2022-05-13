@@ -5,7 +5,7 @@
 
 
 # Create a default provider (in the terragrunt cache folder for the module executed)
-# We can still create aliased providers, I hope.
+#
 # Generate an AWS provider block
 generate "provider" {
   path      = "provider.tf"
@@ -22,7 +22,9 @@ EOF
 
 
 
-# TODO: enable once this works
+# TODO:
+# - enable once the code works.
+# - Consider separate buckets for at least prod vs non-prod
 #
 # Create a backend.tf file (in the folder where the module is executed)
 #
@@ -33,11 +35,11 @@ EOF
 #     if_exists = "overwrite"
 #   }
 #   config = {
-#     bucket         = "pwy-conntest"
+#     bucket         = "pwy-tgstate-conntest"
 #     key            = "${path_relative_to_include()}/terraform.tfstate"
 #     region         = "us-east-1"
 #     encrypt        = true
-#     dynamodb_table = "pwy-conntest-lock"
+#     dynamodb_table = "pwy-tgstate-conntest"
 #   }
 #   # Allow 'TERRAGRUNT_DISABLE_INIT=true terragrunt run-all validate'
 #   # to run without creating the remote backend
@@ -69,6 +71,9 @@ locals {
 # `terragrunt.hcl` config via the include block.
 # ---------------------------------------------------------------------------------------------------------------------
 
+# Unused variables are pruned by TF
+# That is visible in the debug output of 'terragrunt apply .tfplan --terragrunt-log-level debug --terragrunt-debug'
+#
 # Configure root level variables that all resources can inherit. This is especially helpful with multi-account configs
 # where terraform_remote_state data sources are placed directly into the modules.
 inputs = merge(

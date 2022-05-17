@@ -22,30 +22,26 @@ EOF
 
 
 
-# TODO:
-# - enable once the code works.
-# - Consider separate buckets for at least prod vs non-prod
-#
 # Create a backend.tf file (in the folder where the module is executed)
 #
-# remote_state {
-#   backend = "s3"
-#   generate = {
-#     path      = "backend.tf"
-#     if_exists = "overwrite"
-#   }
-#   config = {
-#     bucket         = "pwy-tgstate-conntest"
-#     key            = "${path_relative_to_include()}/terraform.tfstate"
-#     region         = "us-east-1"
-#     encrypt        = true
-#     dynamodb_table = "pwy-tgstate-conntest"
-#   }
-#   # Allow 'TERRAGRUNT_DISABLE_INIT=true terragrunt run-all validate'
-#   # to run without creating the remote backend
-#   # See: https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/
-#   disable_init = tobool(get_env("TERRAGRUNT_DISABLE_INIT", "false"))
-# }
+remote_state {
+  backend = "s3"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite"
+  }
+  config = {
+    bucket         = "pwy-tf-tg-testing-20220517"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "pwy-tgstate-conntest"
+  }
+  # Allow 'TERRAGRUNT_DISABLE_INIT=true terragrunt run-all validate'
+  # to run without creating the remote backend
+  # See: https://terragrunt.gruntwork.io/docs/reference/config-blocks-and-attributes/
+  disable_init = tobool(get_env("TERRAGRUNT_DISABLE_INIT", "false"))
+}
 
 
 locals {

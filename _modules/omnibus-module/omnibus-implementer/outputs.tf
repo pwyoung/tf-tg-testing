@@ -2,4 +2,18 @@ output "aws_region_names" {
   value = module.aws_regions.region_names
 }
 
-#module.aws_regions.module.us-west-1[0].module.vpc[0].module.private_ubuntu_instances[0].module.ec2_instance.aws_instance.this[0]
+output "region_names_downcased" {
+  value = module.aws_regions.region_names_downcased
+}
+
+output "ec2_public_ips" {
+  value = module.aws_regions.ec2_public_ips
+}
+
+output "ec2_public_dns_list" {
+  value = module.aws_regions.ec2_public_dns_list
+}
+
+output "ec2_private_ips" {
+  value = module.aws_regions.ec2_private_ips
+}

@@ -1,9 +1,3 @@
-locals {
-  # Get the name of the regions in the config
-  region_names = keys(jsondecode(var.aws_regions_cfg))
-
-}
-
 # Deal with the fact that the AWS Provider is arguably stuck with a bad design
 # Details, e.g. per https://github.com/hashicorp/terraform/issues/16967#issuecomment-1063328148
 #   Terraform/Hashicorp seems to prefer having a directory in the terraform code per AWS Region

@@ -15,6 +15,7 @@ module "root" {
 
       # AWS
       aws = {
+        # REGIONS
         regions = {
           "us-west-1" = {
             vpc = {
@@ -54,7 +55,7 @@ module "root" {
                 ec2_instance_type       = "${var.public_ec2_instance_type}"
               }
               private_ec2_instances = {
-                number_of_ec2_instances = 1
+                number_of_ec2_instances = 0
                 ec2_key_name            = "${var.private_ec2_key_name}"
                 ec2_instance_type       = "${var.private_ec2_instance_type}"
               }
@@ -70,12 +71,12 @@ module "root" {
                 #public_outbound_acl_rules # rely on defaults in module
               }
               private_subnets = {
-                #cidrs = [] # save on NAT Gateway costs # ["10.101.201.0/24"]
+                cidrs = ["10.101.201.0/24"] # save on NAT Gateway costs # ["10.101.201.0/24"]
                 #private_inbound_acl_rules # rely on defaults in module
                 #private_outbound_acl_rules # rely on defaults in module
               }
               public_ec2_instances = {
-                number_of_ec2_instances = 0
+                number_of_ec2_instances = 1
                 ec2_key_name            = "${var.public_ec2_key_name}"
                 ec2_instance_type       = "${var.public_ec2_instance_type}"
               }
@@ -96,7 +97,7 @@ module "root" {
               private_subnets = {
               }
               public_ec2_instances = {
-                number_of_ec2_instances = 0
+                number_of_ec2_instances = 1
                 ec2_key_name            = "${var.public_ec2_key_name}"
                 ec2_instance_type       = "${var.public_ec2_instance_type}"
               }
@@ -106,6 +107,13 @@ module "root" {
                 ec2_instance_type       = "${var.private_ec2_instance_type}"
               }
             }
+          }
+        }
+        # VPC PEERING CONNECTIONS (depend on REGION/VPCs being built first)
+        vpc_peering = {
+          # FIRST VPC PEERING CONNECTION
+          "somename-useast2-uswest2" = {
+
           }
         }
       }
